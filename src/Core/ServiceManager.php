@@ -3,9 +3,9 @@
 namespace Servex\Core;
 
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Servex\Core\Cache\CacheManager;
+use Servex\Core\ContainerInterface;
 use Servex\Core\Database\DatabaseManager;
 
 class ServiceManager

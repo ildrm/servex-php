@@ -2,13 +2,13 @@
 
 namespace Servex\Core;
 
-use Psr\Container\ContainerInterface;
+use Servex\Core\ContainerInterface;
 
 class Container implements ContainerInterface
 {
     private array $entries = [];
 
-    public function get($id)
+    public function get($id): mixed
     {
         if (!isset($this->entries[$id])) {
             throw new \InvalidArgumentException("Service {$id} not found in container.");
