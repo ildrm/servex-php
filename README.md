@@ -231,7 +231,7 @@ To deploy `ildrm/servex`—a magnum opus of PHP microservices—requires PHP 8.1
 
 1.  Clone the repository or procure the source code, a testament to [version control](https://en.wikipedia.org/wiki/Version\_control):
     
-        git clone https://github.com/ildrm/servex.git
+        git clone https://github.com/ildrm/servex-php.git
     
 2.  Navigate to the project directory, aligning with [directory structure](https://en.wikipedia.org/wiki/Directory\_structure) best practices:
     
@@ -392,10 +392,10 @@ Contributing
 
 We extend an invitation to luminaries—developers, architects, engineers, and IT visionaries—to enrich `ildrm/servex`, a masterpiece of open-source collaboration. Embark on this odyssey with the following steps, a paragon of [collaborative development](https://en.wikipedia.org/wiki/Collaborative\_development):
 
-1.  Fork the repository on GitHub, a bastion of [version control](https://en.wikipedia.org/wiki/Version\_control): [github.com/ildrm/servex](https://github.com/ildrm/servex).
+1.  Fork the repository on GitHub, a bastion of [version control](https://en.wikipedia.org/wiki/Version\_control): [github.com/ildrm/servex](https://github.com/ildrm/servex-php).
 2.  Clone your fork locally, aligning with [distributed version control](https://en.wikipedia.org/wiki/Distributed\_version\_control):
     
-        git clone https://github.com/ildrm/servex.git
+        git clone https://github.com/ildrm/servex-php.git
     
 3.  Install dependencies with Composer, ensuring [dependency management](https://en.wikipedia.org/wiki/Dependency\_management) precision:
     
@@ -428,7 +428,7 @@ Support and Contact
 
 For queries, challenges, or enlightenment, engage with our community:
 
-*   Illuminate an issue on GitHub, our citadel of collaboration: [github.com/ildrm/servex/issues](https://github.com/ildrm/servex/issues).
+*   Illuminate an issue on GitHub, our citadel of collaboration: [github.com/ildrm/servex/issues](https://github.com/ildrm/servex-php/issues).
 *   Commune with the maintainers via email at [ildrm@hotmail.com](mailto:ildrm@hotmail.com?subject=Issue%20Report%20for%20ildrm/servex%20Framework&body=Hello%2C%0D%0A%0D%0AI%20am%20reporting%20an%20issue%20with%20the%20ildrm/servex%20framework.%20Here%20are%20the%20details%3A%0D%0A%0D%0A-%20**Issue%20Description**%3A%20[Briefly%20describe%20the%20problem,%20e.g.,%20"CacheManager%20fails%20to%20connect%20to%20Redis."]%0D%0A-%20**Steps%20to%20Reproduce**%3A%20[List%20steps,%20e.g.,%20"1.%20Run%20CacheManagerTest.php,%202.%20Attempt%20to%20set%20a%20cache%20value,%203.%20Observe%20connection%20error."]%0D%0A-%20**Expected%20Behavior**%3A%20[What%20should%20happen,%20e.g.,%20"Cache%20should%20store%20and%20retrieve%20values%20successfully."]%0D%0A-%20**Actual%20Behavior**%3A%20[What%20actually%20happens,%20e.g.,%20"Connection%20refused%20error%20is%20thrown."]%0D%0A-%20**Environment**%3A%20[PHP%20version,%20OS,%20dependencies,%20e.g.,%20"PHP%208.3,%20Ubuntu%2022.04,%20Composer%202.5."]%0D%0A-%20**Additional%20Notes**%3A%20[Any%20other%20relevant%20information,%20e.g.,%20"This%20occurs%20consistently%20in%20Docker."]%0D%0A%0D%0APlease%20let%20me%20know%20if%20you%20need%20further%20information%20or%20logs.%0D%0A%0D%0A[Your%20Name/Email]).
 *   Join our intellectual conclave on Discord (link forthcoming).
 
