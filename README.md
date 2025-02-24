@@ -470,3 +470,8 @@ The trajectory of `ildrm/servex` unfolds as a visionary roadmap, a beacon for fu
 *   Introducing more service exemplars (e.g., `OrderService`, `PaymentService`) with exhaustive documentation, a paradigm of [domain-driven design](https://en.wikipedia.org/wiki/Domain-driven\_design).
 *   Enhancing performance with Swoole or RoadRunner for real-time applications, a masterpiece of [performance optimization](https://en.wikipedia.org/wiki/Performance\_optimization).
 *   Expanding security features with native Keycloak, Auth0, and OpenID Connect integrations, a fortress of [security by design](https://en.wikipedia.org/wiki/Security\_by\_design).
+
+## Example Usage
+
+To see an example of how to use this framework, visit the following repository:
+[Servex Service Example](https://github.com/ildrm/servex-service)
