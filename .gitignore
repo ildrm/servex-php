@@ -1,0 +1,58 @@
+# PHP dependencies
+/vendor/
+composer.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Cache and logs
+/var/cache/*
+/var/log/*
+/logs/*
+*.log
+*.cache
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.phpstorm.meta.php
+.php_cs.cache
+
+# Testing
+/phpunit.xml
+.phpunit.result.cache
+/coverage/
+.coverage
+coverage.xml
+
+# Redis
+dump.rdb
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# Build artifacts
+/build/
+/dist/
+
+# Docker
+docker-compose.override.yml
+
+# Application specific
+/public/uploads/
+/config/local.php

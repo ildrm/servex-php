@@ -2,8 +2,8 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
+use Servex\Core\Cache\CacheInterface;
 use Servex\Core\Cache\CacheManager;
 
 class CacheManagerTest extends TestCase
