@@ -46,11 +46,9 @@ Integration with Message Queues
 
 `ildrm/servex` stands as a luminary in the realm of [message-oriented middleware](https://en.wikipedia.org/wiki/Message-oriented_middleware), engineered to harmonize seamlessly with an ensemble of industry-standard message queue systems, enabling asynchronous communication critical for microservices. Below, we unveil a magisterial breakdown of integration strategies, each a testament to [asynchronous I/O](https://en.wikipedia.org/wiki/Asynchronous_I/O) excellence:
 
-Message Queue
-
-Integration Approach
-
-Considerations
+- Message Queue
+- Integration Approach
+- Considerations
 
 **Kafka**
 
@@ -93,6 +91,16 @@ Resembles RabbitMQ in functionality but is less common in PHP ecosystems, necess
 Integrate with `php-mqtt/php-mqtt` for MQTT, extending `EventBus` to publish and subscribe to MQTT topics, optimized for [Internet of Things](https://en.wikipedia.org/wiki/Internet_of_things) (IoT) and real-time applications, following the [MQTT protocol](https://en.wikipedia.org/wiki/MQTT).
 
 Excels in IoT and real-time data streams, yet less aligned with traditional microservice patterns due to MQTT’s pub/sub nature, requiring specialized architectural design.
+
+| Message Queue   | Integration Approach                                                                 | Considerations                                      |
+|-----------------|-------------------------------------------------------------------------------------|----------------------------------------------------|
+| **Kafka**       | Use `rdkafka/kafka-php` or `longman/kafka` for `EventBus` event handling, leveraging Kafka’s distributed logs for [fault tolerance](https://en.wikipedia.org/wiki/Fault_tolerance) and scalability. | Requires Kafka cluster, high performance for large-scale apps, but complex PHP setup per [big data](https://en.wikipedia.org/wiki/Big_data) needs. |
+| **RabbitMQ**    | Integrate with `php-amqplib/php-amqplib` for AMQP queues/exchanges via `EventBus`, enabling [complex event processing](https://en.wikipedia.org/wiki/Complex_event_processing). | Lightweight, reliable, supports complex routing, needs AMQP server per [message queue](https://en.wikipedia.org/wiki/Message_queue). |
+| **ActiveMQ**    | Use `stomp-php/stomp-php` for STOMP, extending `EventBus` for JMS compatibility.    | Supports JMS/STOMP, less PHP support, needs rigorous [software testing](https://en.wikipedia.org/wiki/Software_testing) for legacy systems. |
+| **NATS**        | Integrate with `natsserver/php-nats` for lightweight pub/sub via `EventBus`, optimized for [real-time computing](https://en.wikipedia.org/wiki/Real-time_computing). | Simple, real-time for IoT/streaming, but limited for complex routing. |
+| **Redis RQ**    | Leverage `predis/predis` for Redis queues/lists, extending `EventBus` with pub/sub, per [in-memory data grid](https://en.wikipedia.org/wiki/In-memory_data_grid) principles. | Easy with Redis, but less robust for complex patterns, ideal for prototyping. |
+| **AMQ (Apache Qpid)** | Use `php-amqplib/php-amqplib` or STOMP for AMQP, ensuring [message durability](https://en.wikipedia.org/wiki/Message_durability). | Similar to RabbitMQ, less PHP adoption, requires thorough testing for AMQP compatibility. |
+| **HiveMQ**      | Integrate with `php-mqtt/php-mqtt` for MQTT topics via `EventBus`, optimized for [Internet of Things](https://en.wikipedia.org/wiki/Internet_of_things). | Ideal for IoT/real-time, but less suited for traditional microservices due to [MQTT protocol](https://en.wikipedia.org/wiki/MQTT) pub/sub. |
 
 **Implementation Mastery:** To integrate with any message queue, elevate the `EventBus` class in `src/Core/EventBus.php` with methods for publishing to and subscribing from the chosen broker. Employ corresponding PHP libraries—such as `php-amqplib` for RabbitMQ or `rdkafka` for Kafka—and configure connection settings in `.env` or `config/config.php`, adhering to [software design patterns](https://en.wikipedia.org/wiki/Software_design_pattern) like [Factory Pattern](https://en.wikipedia.org/wiki/Factory\_method\_pattern) for broker instantiation.
 
@@ -139,11 +147,9 @@ Authentication Integration (Keycloak, Auth0, OpenID)
 
 `ildrm/servex` emerges as a guardian of enterprise-grade security, offering seamless integration with preeminent authentication systems—Keycloak, Auth0, and OpenID Connect—redefining [identity management](https://en.wikipedia.org/wiki/Identity\_management) for microservices. This integration, a pinnacle of [single sign-on](https://en.wikipedia.org/wiki/Single\_sign-on) (SSO) and [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) sophistication, is detailed below:
 
-Authentication System
-
-Integration Approach
-
-Considerations
+- Authentication System
+- Integration Approach
+- Considerations
 
 **Keycloak**
 
@@ -162,6 +168,12 @@ Cloud-based and facile to configure, yet mandates an Auth0 account and may incur
 Harness `thephpleague/oauth2-client` with an OpenID provider, extending `AuthManager` to validate OpenID tokens with artistry, mapping claims to user roles, and securing endpoints with `AuthMiddleware`, embracing [federated identity](https://en.wikipedia.org/wiki/Federated\_identity) standards.
 
 Highly interoperable, yet requires meticulous configuration of the OpenID provider and token validation logic, a challenge for [identity federation](https://en.wikipedia.org/wiki/Identity\_federation) architects.
+
+| Authentication System | Integration Approach                                                                 | Considerations                                      |
+|-----------------------|-------------------------------------------------------------------------------------|----------------------------------------------------|
+| **Keycloak**          | Use `keycloak/keycloak-php-client` or `league/oauth2-client` for OpenID Connect, extending `AuthManager` for RBAC via JWTs. | Requires Keycloak server, advanced RBAC/SSO, but complex for [enterprise architecture](https://en.wikipedia.org/wiki/Enterprise_architecture). |
+| **Auth0**             | Integrate with `auth0/auth0-php` for JWT validation, extending `AuthManager` per [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth). | Cloud-based, easy setup, but costs for enterprise use, aligns with [SaaS](https://en.wikipedia.org/wiki/Software_as_a_service). |
+| **OpenID Connect**    | Use `thephpleague/oauth2-client` with an OpenID provider, extending `AuthManager` for [federated identity](https://en.wikipedia.org/wiki/Federated_identity). | Highly interoperable, but complex configuration, challenging for [identity federation](https://en.wikipedia.org/wiki/Identity_federation) architects. |
 
 **Engineering Mastery:** Refine `AuthManager.php` and `AuthMiddleware.php` with methods for token validation, configuring settings in `.env` (e.g., `KEYCLOAK_URL`, `AUTH0_DOMAIN`, `OPENID_ISSUER`), and adhere to [security patterns](https://en.wikipedia.org/wiki/Security\_pattern) like [token-based authentication](https://en.wikipedia.org/wiki/Token-based\_authentication).
 
@@ -282,15 +294,18 @@ To wield `ildrm/servex`—a masterpiece of microservice orchestration—initiali
     
     $serviceManager = $bootstrap->getServiceManager();
     
-    // Create a new user, a paragon of [business logic](https://en.wikipedia.org/wiki/Business_logic)
+Create a new user, a paragon of [business logic](https://en.wikipedia.org/wiki/Business_logic)
+
     $result = $serviceManager->call('user', 'createUser', ['Ali']);
     var_dump($result);
     
-    // Retrieve a user, a symphony of [data access](https://en.wikipedia.org/wiki/Data_access)
+Retrieve a user, a symphony of [data access](https://en.wikipedia.org/wiki/Data_access)
+
     $user = $serviceManager->call('user', 'getUser', [1]);
     var_dump($user);
     
-    // Emit an event with EventBus, a pinnacle of [event sourcing](https://en.wikipedia.org/wiki/Event_sourcing)
+Emit an event with EventBus, a pinnacle of [event sourcing](https://en.wikipedia.org/wiki/Event_sourcing)
+
     $eventBus = $serviceManager->getEventBus();
     $eventBus->on('user.created', function (array $data) {
         echo "User created: " . $data['name'] . PHP_EOL;
@@ -299,7 +314,8 @@ To wield `ildrm/servex`—a masterpiece of microservice orchestration—initiali
     });
     $eventBus->emit('user.created', ['id' => $result['id'], 'name' => 'Ali']);
     
-    // Example: Call a service via HTTP transport, a marvel of [RESTful architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
+Example: Call a service via HTTP transport, a marvel of [RESTful architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
+
     $transport = new \Servex\Core\Transport\HttpTransport();
     $result = $transport->call('http://order-service/api', 'createOrder', ['userId' => $result['id']]);
     var_dump($result);
@@ -350,19 +366,23 @@ Database Setup
 
 To unleash `ildrm/servex` and its symphony of tests, orchestrate the database and tables with precision, a cornerstone of [data modeling](https://en.wikipedia.org/wiki/Data\_modeling) and [database design](https://en.wikipedia.org/wiki/Database\_design):
 
-    -- Create the database, a monument of [relational database](https://en.wikipedia.org/wiki/Relational_database)
+Create the database, a monument of [relational database](https://en.wikipedia.org/wiki/Relational_database)
+
     CREATE DATABASE servex_db;
     
-    -- Use the database, aligning with [schema management](https://en.wikipedia.org/wiki/Database_schema)
+Use the database, aligning with [schema management](https://en.wikipedia.org/wiki/Database_schema)
+
     USE servex_db;
     
-    -- Create the users table, a paragon of [normalization](https://en.wikipedia.org/wiki/Database_normalization)
+Create the users table, a paragon of [normalization](https://en.wikipedia.org/wiki/Database_normalization)
+
     CREATE TABLE users (
         id INT PRIMARY KEY,
         name VARCHAR(255) NOT NULL
     );
     
-    -- Insert a sample record for testing, embodying [data seeding](https://en.wikipedia.org/wiki/Data_seeding)
+Insert a sample record for testing, embodying [data seeding](https://en.wikipedia.org/wiki/Data_seeding)
+
     INSERT INTO users (id, name) VALUES (1, 'Test User');
 
 Ensure your `.env` or `config/config.php` resonates with your database settings, leveraging [environment variables](https://en.wikipedia.org/wiki/Environment\_variable) for security. For testing, deploy a test database to preserve production integrity, adhering to [data isolation](https://en.wikipedia.org/wiki/Data\_isolation) principles.
