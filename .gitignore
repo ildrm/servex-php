@@ -15,8 +15,8 @@ composer.lock
 *.cache
 
 # IDE specific files
-.idea/
-.vscode/
+/.idea/
+/.vscode/
 *.sublime-project
 *.sublime-workspace
 .phpstorm.meta.php
