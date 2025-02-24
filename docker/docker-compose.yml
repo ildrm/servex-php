@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/var/www/servex
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
