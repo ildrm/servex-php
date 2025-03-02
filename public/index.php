@@ -15,7 +15,9 @@ $bootstrap->init();
 
 try {
     $serviceManager = $bootstrap->getServiceManager();
-    $result = $serviceManager->call('user', 'createUser', ['Ali']);
+    $result = $serviceManager->call('user', 'create', ['Ali', 'ali@example.com', 'password123']); // Updated to include email and password
+
+
     var_dump($result);
 
     $user = $serviceManager->call('user', 'getUser', [1]);
