@@ -9,17 +9,20 @@ use Laminas\Diactoros\Response;
 use Servex\Core\Auth\AuthManager;
 use Servex\Core\Cache\CacheManager;
 use Servex\Core\Database\DatabaseManager;
+use Servex\Core\Router;
 
 class Application
 {
     private Container $container;
     private ServiceManager $serviceManager;
     private array $middleware = [];
+    private Router $router;
     
     public function __construct(string $configPath)
     {
         $config = require $configPath;
         $this->container = new Container();
+        $this->router = new Router();
         
         // Register core services
         $this->container->set(DatabaseManager::class, fn() => new DatabaseManager($config['database']));
@@ -27,6 +30,12 @@ class Application
         $this->container->set(AuthManager::class, fn() => new AuthManager($config['auth']));
         
         $this->serviceManager = new ServiceManager($this->container);
+    }
+
+    public function addRoute(string $method, string $path, callable $handler): self
+    {
+        $this->router->addRoute($method, $path, $handler);
+        return $this;
     }
     
     public function addMiddleware(callable $middleware): self
