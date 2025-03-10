@@ -5,7 +5,7 @@ namespace Servex\Http;
 class Request
 {
     private array $query;
-    private array $request;
+    private array $parsedBody;
     private array $attributes;
     private array $headers;
     private string $method;
@@ -14,11 +14,33 @@ class Request
     public function __construct()
     {
         $this->query = $_GET;
-        $this->request = $_POST;
+        $this->parsedBody = $this->parseBody();
         $this->attributes = [];
         $this->headers = getallheaders();
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->uri = $_SERVER['REQUEST_URI'];
+    }
+
+    private function parseBody(): array
+    {
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        
+        if (strpos($contentType, 'application/json') !== false) {
+            $content = file_get_contents('php://input');
+            return json_decode($content, true) ?? [];
+        }
+        
+        return $_POST;
+    }
+
+    public function getParsedBody(): array
+    {
+        return $this->parsedBody;
+    }
+
+    public function getQueryParams(): array
+    {
+        return $this->query;
     }
 
     public function getMethod(): string
@@ -29,22 +51,6 @@ class Request
     public function getUri(): string
     {
         return $this->uri;
-    }
-
-    public function getQuery(string $key = null, mixed $default = null): mixed
-    {
-        if ($key === null) {
-            return $this->query;
-        }
-        return $this->query[$key] ?? $default;
-    }
-
-    public function getRequest(string $key = null, mixed $default = null): mixed
-    {
-        if ($key === null) {
-            return $this->request;
-        }
-        return $this->request[$key] ?? $default;
     }
 
     public function getHeaders(): array
