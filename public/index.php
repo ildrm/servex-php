@@ -4,6 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use Servex\Core\Application;
+use Servex\Core\Auth\AuthManager;
 use Servex\Core\Auth\Middleware\AuthMiddleware;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
