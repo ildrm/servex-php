@@ -5,38 +5,53 @@ namespace Servex\Core\Auth;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Psr\Http\Message\ServerRequestInterface;
-use stdClass;
 
 class AuthManager
 {
-    private string $secretKey;
+    private array $config;
 
-    public function __construct(string $secretKey)
+    public function __construct(array $config)
     {
-        $this->secretKey = $secretKey;
+        $this->config = $config;
     }
 
-    public function generateToken(array $payload, int $ttl = 3600): string
+    public function authenticate(ServerRequestInterface $request): ?array
     {
-        $payload['exp'] = time() + $ttl;
-        return JWT::encode($payload, $this->secretKey, 'HS256');
-    }
+        $token = $this->extractToken($request);
+        if (!$token) {
+            return null;
+        }
 
-    public function verifyToken(string $token): ?stdClass
-    {
         try {
-            $decoded = JWT::decode($token, new Key($this->secretKey, 'HS256'));
-            return $decoded instanceof stdClass ? $decoded : null;
+            $decoded = JWT::decode(
+                $token, 
+                new Key($this->config['secret_key'], 'HS256')
+            );
+            return (array) $decoded;
         } catch (\Exception $e) {
             return null;
         }
     }
 
-    public function authenticate(ServerRequestInterface $request): ?stdClass
+    public function generateToken(array $userData): string
     {
-        $authHeader = $request->getHeaderLine('Authorization');
-        if (preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
-            return $this->verifyToken($matches[1]);
+        $issuedAt = time();
+        $payload = array_merge(
+            $userData,
+            [
+                'iat' => $issuedAt,
+                'exp' => $issuedAt + $this->config['token_ttl']
+            ]
+        );
+
+        return JWT::encode($payload, $this->config['secret_key'], 'HS256');
+    }
+
+    private function extractToken(ServerRequestInterface $request): ?string
+    {
+        $header = $request->getHeaderLine('Authorization');
+        if (preg_match('/Bearer\s+(.*)$/i', $header, $matches)) {
+            return $matches[1];
         }
         return null;
     }

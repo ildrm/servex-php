@@ -3,78 +3,84 @@
 namespace Servex\Core\Cache;
 
 use Psr\SimpleCache\CacheInterface;
-use Predis\Client as RedisClient;
 
-class CacheManager implements CacheInterface
+class CacheManager implements CacheInterface 
 {
-    private RedisClient $cache;
-
-    public function __construct(
-        private string $host = 'localhost',
-        private int $port = 6379,
-        private ?string $password = null
-    ) {
-        $config = [
-            'scheme' => 'tcp',
-            'host' => $this->host,
-            'port' => $this->port,
-        ];
-        
-        if ($this->password) {
-            $config['password'] = $this->password;
+    private string $cachePath;
+    
+    public function __construct(array $config)
+    {
+        $this->cachePath = $config['path'] ?? sys_get_temp_dir() . '/servex-cache';
+        if (!is_dir($this->cachePath)) {
+            mkdir($this->cachePath, 0777, true);
         }
-        
-        $this->cache = new RedisClient($config);
     }
 
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
-        $value = $this->cache->get($key);
-        return $value !== null ? unserialize($value) : $default;
-    }
-
-    public function set($key, $value, $ttl = null): bool
-    {
-        $serialized = serialize($value);
-        if ($ttl !== null) {
-            return (bool)$this->cache->setex($key, $ttl, $serialized);
+        $path = $this->getPath($key);
+        if (!file_exists($path)) {
+            return $default;
         }
-        return (bool)$this->cache->set($key, $serialized);
+        return unserialize(file_get_contents($path));
     }
 
-    public function delete($key): bool
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
-        return (bool)$this->cache->del($key);
+        return file_put_contents($this->getPath($key), serialize($value)) !== false;
+    }
+
+    private function getPath(string $key): string
+    {
+        return $this->cachePath . '/' . md5($key);
+    }
+
+    public function delete(string $key): bool
+    {
+        $path = $this->getPath($key);
+        return file_exists($path) && unlink($path);
     }
 
     public function clear(): bool
     {
-        return (bool)$this->cache->flushdb();
+        $files = glob($this->cachePath . '/*');
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+        return true;
     }
 
     public function getMultiple($keys, $default = null)
     {
-        $values = $this->cache->mget((array)$keys);
         $result = [];
-        foreach ($keys as $i => $key) {
-            $result[$key] = $values[$i] !== null ? unserialize($values[$i]) : $default;
+        foreach ($keys as $key) {
+            $result[$key] = $this->get($key, $default);
         }
         return $result;
     }
 
     public function setMultiple($values, $ttl = null): bool
     {
-        $serialized = array_map('serialize', $values);
-        return (bool)$this->cache->mset($serialized);
+        $result = true;
+        foreach ($values as $key => $value) {
+            $result = $result && $this->set($key, $value, $ttl);
+        }
+        return $result;
     }
 
     public function deleteMultiple($keys): bool
     {
-        return (bool)$this->cache->del($keys);
+        $result = true;
+        foreach ($keys as $key) {
+            $result = $result && $this->delete($key);
+        }
+        return $result;
     }
 
     public function has($key): bool
     {
-        return (bool)$this->cache->exists($key);
+        return file_exists($this->getPath($key));
     }
 }
